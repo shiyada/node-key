@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Simple registration form</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <style>
+       html, body {
+         display: flex;
+         justify-content: center;
+         height: 100%;
+         width: 100%;
+         top: 0;
+         margin: 0px;
+         }
+         .container{
+            margin: 100px auto;
+            background: linear-gradient(110deg, #fdcd3b 60%, #000000 60%);
+         }
+         .header-h{
+            padding-top: 20px;
+         }
+         h1 {
+         padding: 20px 0;
+         font-size: 32px;
+         text-align: center;
+         font-family: roboto;
+         }
+       .form-f{
+          padding-top: 10px;
+       }
+       .result{
+          padding-top: 20px;
+          display: none;
+       }
+       .card{
+         width: 30%;
+          margin: auto 10px;
+          height: 200px;
+       }
+       footer{
+          color: blue;
+          position: absolute;
+          bottom: 0px;
+          width: 73%;
+          margin: 0px;
+          padding: 0px;
+       }
+    </style>
+  </head>
+
+  <body>
+   <div class="container">
+      <div class="row header-h d-flex justify-content-center">
+         <h1>Key Generator</h1>
+      </div>
+      <div class="row d-flex justify-content-center form-f">
+         <form class="form-inline">
+            <div class="form-group mx-sm-3 mb-2">
+              <input type="text" class="form-control" name="R" id="name" placeholder="Input random number">
+            </div>
+            <button type="submit" class="btn btn-danger mb-2" id="submit">Genearate</button>
+         </form>
+      </div>
+      <div class="result row justify-content-center" id="result_out">
+         <div class="card">
+            <div class="card-body">
+               <h5 class="card-title">Public key</h5>
+               <p id="publickey"></p>
+            </div>
+         </div>
+         <div class="card">
+            <div class="card-body">
+               <h5 class="card-title">Private key</h5>
+               <p id="privatekey"></p>
+            </div>
+         </div>
+         <div class="card">
+            <div class="card-body">
+               <h5 class="card-title">Address</h5>
+               <p id="add"></p>
+            </div>
+         </div>
+      </div>
+      <footer>
+         <div class="text-center">
+            <small>Copyright &copy; Vaishnav K S</small>
+         </div>
+      </footer>
+   </div>
+   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  
+  </body>
+  <script type="text/javascript">
+   $(document).ready(function() {
+ 
+ 
+       $('#submit').click(function(e){
+         e.preventDefault();
+ 
+ 
+         var R = $("#name").val();
+ 
+         if (R!="")
+          {
+ 
+         $.ajax({
+             type: "POST",
+             url: "http://127.0.0.1:3000/generate",
+             dataType: "json",
+             data: {Random:R},
+             success : function(data){
+                var x=document.getElementById("result_out");
+                x.style.display = "flex";
+                  document.getElementById("privatekey").innerHTML=data.Private_key;
+                  document.getElementById("publickey").innerHTML=data.Public_key;
+                  document.getElementById("add").innerHTML=data.Address;
+                  console.log("Success: " +data);
+             }
+         });
+         }
+         else
+         {
+           alert("All input feilds must contain values")
+         }
+ 
+ 
+       });
+   });
+ </script>
+</html>
